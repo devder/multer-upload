@@ -16,6 +16,26 @@ export default function Home() {
     });
   };
 
+  const handleSave = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("customKeyUsedInAPI", selectedFile.selectedFile); // "customKeyUsedInAPI" will be used to access the file in the API
+    console.log(selectedFile.selectedFile);
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log("response >>", data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -84,6 +104,7 @@ export default function Home() {
             onChange={imgChangeHandler}
           />
           <button
+            onClick={handleSave}
             disabled={!selectedFile}
             style={{
               marginTop: "12px",
