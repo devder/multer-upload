@@ -1,11 +1,21 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import styles from "@/styles/Home.module.css";
+import { useState } from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [selectedFile, setSelectedFile] = useState<any>();
+
+  const imgChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile({
+      selectedFile: e.target.files?.[0],
+      loaded: 0,
+    });
+  };
+
   return (
     <>
       <Head>
@@ -26,7 +36,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              By{' '}
+              By{" "}
               <Image
                 src="/vercel.svg"
                 alt="Vercel Logo"
@@ -57,6 +67,35 @@ export default function Home() {
               priority
             />
           </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: "24px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            id="image-picker"
+            key="image-picker"
+            onChange={imgChangeHandler}
+          />
+          <button
+            disabled={!selectedFile}
+            style={{
+              marginTop: "12px",
+              background: "white",
+              color: "black",
+              height: "24px",
+              borderRadius: "4px",
+              cursor: !!selectedFile ? "pointer" : undefined,
+            }}
+          >
+            Upload
+          </button>
         </div>
 
         <div className={styles.grid}>
@@ -119,5 +158,5 @@ export default function Home() {
         </div>
       </main>
     </>
-  )
+  );
 }
